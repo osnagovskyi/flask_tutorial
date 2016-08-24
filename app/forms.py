@@ -6,7 +6,8 @@ from app.models import User
 class LoginForm(Form):
     openid = StringField('openid', validators=[DataRequired()])
     remember_me = BooleanField('remember_me', default=False)
-    
+
+#Edit user profile    
 class EditForm(Form):
     nickname = StringField('nickname', validators=[DataRequired()])
     about_me = TextAreaField('about_me', validators=[Length(min=0, max=140)])
@@ -14,6 +15,7 @@ class EditForm(Form):
         Form.__init__(self, *args, **kwargs)
         self.original_nickname = original_nickname
 
+#Custom form validation to ensure unique usernames
     def validate(self):
         if not Form.validate(self):
             return False
@@ -24,3 +26,7 @@ class EditForm(Form):
             self.nickname.errors.append('This nickname is already in use. Please choose another one.')
             return False
         return True
+        
+#Submit new post        
+class PostForm(Form):
+    post = StringField('post', validators=[DataRequired()])
