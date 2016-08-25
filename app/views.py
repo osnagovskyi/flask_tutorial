@@ -4,7 +4,8 @@ from app import app, db, lm, oid
 from .forms import LoginForm, EditForm, PostForm, SearchForm
 from .models import User, Post
 from datetime import datetime
-from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
+from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, ENABLE_MAIL_NOTIFICATION
+from .emails import follower_notification
 
 @app.before_request
 def before_request():
@@ -134,6 +135,8 @@ def follow(nickname):
     db.session.add(u)
     db.session.commit()
     flash('You are now following ' + nickname + '!')
+    if ENABLE_MAIL_NOTIFICATION:
+        follower_notification(user, g.user)
     return redirect(url_for('user', nickname=nickname))
 
 @app.route('/unfollow/<nickname>')
