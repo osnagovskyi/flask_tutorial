@@ -30,3 +30,7 @@ class EditForm(Form):
 #Submit new post        
 class PostForm(Form):
     post = StringField('post', validators=[DataRequired()])
+    
+#Search form
+class SearchForm(Form):
+    search = StringField('search', validators=[DataRequired()])
